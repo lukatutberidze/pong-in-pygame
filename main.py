@@ -1,7 +1,7 @@
 import pygame
 pygame.init()
-from class_ball_0 import Ball
-from class_paddle_0 import Paddle
+from class_ball import Ball
+from class_paddle import Paddle
 
 WIDTH,HEIGHT=700,500
 PADDLE_HEIGHT,PADDLE_WIDTH=100,20
