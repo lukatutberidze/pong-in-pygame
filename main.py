@@ -2,6 +2,7 @@ import pygame
 pygame.init()
 from class_ball import Ball
 from class_paddle import Paddle
+from class_bot import Bot
 
 WIDTH,HEIGHT=700,500
 PADDLE_HEIGHT,PADDLE_WIDTH=100,20
@@ -53,12 +54,8 @@ def handle_collision(ball,left_paddle,right_paddle):
                 reduction_factor=(right_paddle.height/2)/ball.MAX_VEL
                 ball.y_vel=difference_in_y/reduction_factor*-1
 
-def handle_paddle_movement(keys,left_paddle,right_paddle):
-    if keys[pygame.K_w] and left_paddle.y-left_paddle.VEL>=0:
-        left_paddle.move(up=True)
-
-    if keys[pygame.K_s] and left_paddle.y+left_paddle.VEL+left_paddle.height<=HEIGHT:
-        left_paddle.move(up=False)
+def handle_paddle_movement(keys,left_paddle,right_paddle,ball_y):
+    left_paddle.move(ball_y)
 
     if keys[pygame.K_UP] and right_paddle.y-right_paddle.VEL>=0:
         right_paddle.move(up=True)
@@ -69,7 +66,7 @@ def handle_paddle_movement(keys,left_paddle,right_paddle):
 def main():
     run=True
     clock=pygame.time.Clock()
-    left_paddle=Paddle(10,HEIGHT//2-PADDLE_HEIGHT//2,PADDLE_WIDTH,PADDLE_HEIGHT)
+    left_paddle=Bot(10,HEIGHT//2-PADDLE_HEIGHT//2,PADDLE_WIDTH,PADDLE_HEIGHT)
     right_paddle=Paddle(WIDTH-10-PADDLE_WIDTH,HEIGHT//2-PADDLE_HEIGHT//2,PADDLE_WIDTH,PADDLE_HEIGHT)
     ball=Ball(WIDTH//2,HEIGHT//2,BALL_RADIUS)
 
@@ -83,7 +80,7 @@ def main():
                 run=False
                 break
         keys=pygame.key.get_pressed()
-        handle_paddle_movement(keys,left_paddle,right_paddle)
+        handle_paddle_movement(keys,left_paddle,right_paddle,ball.y)
         ball.move()
         handle_collision(ball,left_paddle,right_paddle)
         if ball.x<0:
