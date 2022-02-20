@@ -14,7 +14,7 @@ SCORE_FONT=pygame.font.SysFont("comicsans",30)
 
 WHITE=(255,255,255)
 BLACK=(0,0,0)
-
+WINNING_SCORE=10
     
 def draw(win,paddles,ball,left,right):
     win.fill(BLACK)
@@ -90,7 +90,25 @@ def main():
         elif ball.x>WIDTH:
             left_score+=1
             ball.reset()
+        
+        won=False
 
+        if left_score==WINNING_SCORE:
+            won=True
+            win_text='Left player won'
+        elif right_score==WINNING_SCORE:
+            won=True
+            win_text='Right player won'
+        if won:
+            text=SCORE_FONT.render(win_text,1,WHITE)
+            WIN.blit(text, (WIDTH//2 - text.get_width() //2, HEIGHT//2 - text.get_height()//2))            
+            pygame.display.update()
+            pygame.time.delay(5000)
+            ball.reset()
+            left_paddle.reset()
+            right_paddle.reset()
+            left_score=0
+            right_score=0
     
     pygame.quit()
 
